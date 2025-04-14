@@ -39,11 +39,13 @@ public class AccountManager {
 				myAccount.add(acc);
 				System.out.println("계좌정보를 덮어썼습니다.");
 			} else {
-				System.out.println();
+				System.out.println("기존 계좌정보를 유지합니다.");
 			}
+		} else {
+			myAccount.add(acc);
+			System.out.println("계좌계설이 완료되었습니다.");
 		}
 		
-		System.out.println("계좌계설이 완료되었습니다.");
 	}
 	
 	public void depositMoney() {
@@ -190,6 +192,11 @@ public class AccountManager {
 	
 	public void showAccInfo() {
 		
+		if(myAccount.isEmpty()) {
+			System.out.println("출력할 계좌가 없습니다.");
+			return;
+		}
+		
 		for(Account ac : myAccount) {
 			System.out.println("-----------------");
 			ac.showAccInfo();
@@ -201,6 +208,19 @@ public class AccountManager {
 	}
 	
 	public void deleteAccount() {
+		 BankingSystemMain.scan.nextLine();
+		
+		System.out.print("삭제할 계좌번호: ");
+		String delete = BankingSystemMain.scan.nextLine();
+		
+		Account dummy = new NormalAccount(delete, "", 0, 0);
+		
+		if(myAccount.remove(dummy)) {
+			System.out.println("계좌가 삭제되었습니다.");
+		} else {
+			System.out.println("해당계좌를 찾을 수 없습니다.");
+		}
+		
 		
 	}
 	

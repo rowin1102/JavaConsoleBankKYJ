@@ -28,8 +28,8 @@ public abstract class Account {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
-	    if (obj == null || getClass() != obj.getClass()) return false;
-	    
+		if (obj == null || !(obj instanceof Account)) return false;
+		
 	    Account other = (Account) obj;
 	    return this.account.equals(other.account);
 	}

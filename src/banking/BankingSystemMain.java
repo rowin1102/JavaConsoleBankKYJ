@@ -41,6 +41,7 @@ public class BankingSystemMain implements ICustomDefine {
 					scan.nextLine();
 					}
 				}
+				
 				switch(choice) {
 				case MAKE:
 					int subchoice = 0;
