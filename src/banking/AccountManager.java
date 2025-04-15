@@ -1,13 +1,47 @@
 package banking;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashSet;
 
 public class AccountManager {
 	
 	private HashSet<Account> myAccount;
+	private static final String SAVE_PATH = "src/banking/AccountInfo.obj";
+	private AutoSaver autoSaver;
 	
 	public AccountManager(int num) {
 		myAccount = new HashSet<Account>();
+		loadAccountData();
+	}
+	
+	public void saveAcountData() {
+		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(SAVE_PATH))){
+			out.writeObject(myAccount);
+			System.out.println("계좌 정보가 저장되었습니다.");
+		} catch (IOException e) {
+			System.out.println("계좌 저장 중 오류 발생: " + e.getMessage());
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void loadAccountData() {
+		File file = new File(SAVE_PATH);
+		if(!file.exists()) {
+			System.out.println("AccountInfo.obj파일이 없습니다.");
+			return;
+		}
+		
+		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
+			myAccount = (HashSet<Account>) in.readObject();
+			System.out.println("계좌 정보를 불러왔습니다.");
+		} catch (Exception e) {
+			System.out.println("계좌 불러오기 중 오류 발생: " + e.getMessage());
+		}
 	}
 	
 	public void makeAccount(int choice) {
@@ -28,6 +62,8 @@ public class AccountManager {
 			System.out.print("신용등급(A,B,C):"); 
 			mkRating = BankingSystemMain.scan.nextLine();
 			acc = new HighCreditAccount(mkAccount, mkName, mkMoney, mkInterest, mkRating);
+		} else if(choice == 3) {
+			acc = new SpecialAccount(mkAccount, mkName, mkMoney, mkInterest);
 		}
 		
 		if(myAccount.contains(acc)) {
@@ -44,6 +80,7 @@ public class AccountManager {
 		} else {
 			myAccount.add(acc);
 			System.out.println("계좌계설이 완료되었습니다.");
+			saveAcountData();
 		}
 		
 	}
@@ -60,7 +97,7 @@ public class AccountManager {
 		
 		boolean found = false;
 		for(Account ac : myAccount) {
-			if(deAccount.equals(ac.account)) {
+			if(deAccount.equals(ac.getAccount())) {
 				found = true;
 				break;
 			}
@@ -92,29 +129,8 @@ public class AccountManager {
 		}
 		
 		for(Account ac : myAccount) {
-			if(deAccount.equals(ac.account)) {
-				int basicInterestRate = 0;
-				int extraInterestRate = 0;
-				
-				if(ac instanceof HighCreditAccount) {
-					HighCreditAccount high = (HighCreditAccount)ac;
-					basicInterestRate = high.interest;
-					
-					switch(high.creditRating.toUpperCase()) {
-					case "A": extraInterestRate = 7; break;
-					case "B": extraInterestRate = 4; break;
-					case "C": extraInterestRate = 2; break;
-					}
-				} else if(ac instanceof NormalAccount) {
-					NormalAccount normal = (NormalAccount)ac;
-					basicInterestRate = normal.interest;
-				}
-				
-				int basicInterest = ac.money * basicInterestRate / 100;
-				int extraInterest = ac.money * extraInterestRate / 100;
-				
-				ac.money = ac.money + basicInterest + extraInterest + deMoney;
-				
+			if(deAccount.equals(ac.getAccount())) {	
+				ac.deposit(deMoney);
 				System.out.println("입금이 완료되었습니다.");
 				break;
 			}
@@ -134,7 +150,7 @@ public class AccountManager {
 		
 		boolean found = false;
 		for(Account ac : myAccount) {
-			if(wiAccount.equals(ac.account)) {
+			if(wiAccount.equals(ac.getAccount())) {
 				found = true;
 				break;
 			}
@@ -166,21 +182,23 @@ public class AccountManager {
 		}
 		
 		for(Account ac : myAccount) {
-			if(wiAccount.equals(ac.account)) {
-				if(wiMoney > ac.money) {
+			if(wiAccount.equals(ac.getAccount())) {
+				if(wiMoney > ac.getMoney()) {
 					System.out.println("잔고가 부족합니다. 금액전체를 출금할까요?");
 					System.out.println("Y:금액전체 출금, N:출금요청취소");
 					System.out.print("선택:");
 					String choice = BankingSystemMain.scan.nextLine();
+					
 					if(choice.toUpperCase().equals("Y")) {
 						System.out.println("금액 전체를 출금합니다.");
-						ac.money = 0;
+						ac.setMoney(0);
 					} else if(choice.toUpperCase().equals("N")) {
 						System.out.println("출금요청을 취소합니다.");
 						return;
 					}
+					
 				} else {
-					ac.money -= wiMoney;
+					ac.setMoney(ac.getMoney() - wiMoney);
 					System.out.println("출금이 완료되었습니다.");
 					break;
 				}
@@ -208,7 +226,7 @@ public class AccountManager {
 	}
 	
 	public void deleteAccount() {
-		 BankingSystemMain.scan.nextLine();
+		BankingSystemMain.scan.nextLine();
 		
 		System.out.print("삭제할 계좌번호: ");
 		String delete = BankingSystemMain.scan.nextLine();
@@ -221,6 +239,42 @@ public class AccountManager {
 			System.out.println("해당계좌를 찾을 수 없습니다.");
 		}
 		
+	}
+	
+	public void saveOption() {
+		
+		System.out.println("1.자동저장On, 2.자동저장off");
+		System.out.print("선택:");
+		
+		while(true) {
+			
+			BankingSystemMain.scan.nextLine();
+			int choice = Integer.parseInt(BankingSystemMain.scan.nextLine());
+			
+			switch(choice) {
+			case 1:
+				if(autoSaver != null && autoSaver.isAlive()) {
+					System.out.println("이미 자동저장이 실행중입니다.");
+				} else {
+					autoSaver = new AutoSaver(myAccount);
+					autoSaver.setDaemon(true);
+					autoSaver.start();
+					System.out.println("자동저장이 시작되었습니다.");
+				}
+				break;
+			case 2:
+				if(autoSaver != null && autoSaver.isAlive()) {
+					autoSaver.interrupt();
+					System.out.println("자동저장이 종료됩니다.");
+					return;
+				} else {
+					System.out.println("자동저장이 실행중이 아닙니다.");
+				}
+				break;
+			default:
+					System.out.println("잘못된 선택입니다.");
+			}
+		}
 		
 	}
 	
