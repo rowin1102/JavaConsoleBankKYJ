@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class BankingDBAccount implements DBICustomDefine {
 	
-public static Scanner scan = new Scanner(System.in);
+	public static Scanner scan = new Scanner(System.in);
 	
 	public static void showMenu() {
 		System.out.println("-----Menu-----");
