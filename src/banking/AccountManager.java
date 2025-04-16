@@ -260,6 +260,7 @@ public class AccountManager {
 					autoSaver.setDaemon(true);
 					autoSaver.start();
 					System.out.println("자동저장이 시작되었습니다.");
+					return;
 				}
 				break;
 			case 2:
@@ -269,8 +270,8 @@ public class AccountManager {
 					return;
 				} else {
 					System.out.println("자동저장이 실행중이 아닙니다.");
+					return;
 				}
-				break;
 			default:
 					System.out.println("잘못된 선택입니다.");
 			}

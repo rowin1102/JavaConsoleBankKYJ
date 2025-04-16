@@ -6,8 +6,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Scanner;
 
-public class MyConnection implements IConnect {
+public class DBMyConnection implements DBIConnect {
 	
 	public Connection con;
 	public ResultSet rs;
@@ -15,7 +16,9 @@ public class MyConnection implements IConnect {
 	public PreparedStatement psmt;
 	public CallableStatement csmt;
 	
-	public MyConnection(String user, String pass) {
+	private static final Scanner scan = new Scanner(System.in);
+	
+	public DBMyConnection(String user, String pass) {
 		try {
 			Class.forName(ORACLE_DRIVER);
 			con = DriverManager.getConnection(ORACLE_URL, user, pass);
@@ -26,6 +29,9 @@ public class MyConnection implements IConnect {
 		}
 		
 	}
+	
+	@Override
+	public void dbExecute() {}
 	
 	@Override
 	public void dbClose() {
@@ -43,5 +49,16 @@ public class MyConnection implements IConnect {
 		}
 	}
 	
+	@Override
+	public String inputValue(String title) {
+		System.out.print(title + "을(를) 입력(exit->종료):");
+		String inputStr = scan.nextLine();
+		if("EXIT".equalsIgnoreCase(inputStr)) {
+			System.out.println("프로그램을 종료합니다.");
+			dbClose();
+			System.exit(0);
+		}
+		return inputStr;
+	}
 	
 }
