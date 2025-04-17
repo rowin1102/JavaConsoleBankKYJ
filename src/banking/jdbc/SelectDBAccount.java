@@ -17,9 +17,9 @@ public class SelectDBAccount extends DBMyConnection {
 			
 			boolean found = false;
 			
-			query = "SELECT * FROM banking WHERE account LIKE ?";
+			query = "SELECT * FROM banking WHERE account = ?";
 			psmt = con.prepareStatement(query);
-			psmt.setString(1, "%" + inputValue("찾는 계좌") + "%");
+			psmt.setString(1, inputValue("찾는 계좌"));
 			
 			rs = psmt.executeQuery();
 			
@@ -48,8 +48,6 @@ public class SelectDBAccount extends DBMyConnection {
 			dbClose();
 		}
 		
-		
 	}
-	
 	
 }

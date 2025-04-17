@@ -19,6 +19,7 @@ public class DBMyConnection implements DBIConnect {
 	private static final Scanner scan = new Scanner(System.in);
 	
 	public DBMyConnection(String user, String pass) {
+		
 		try {
 			Class.forName(ORACLE_DRIVER);
 			con = DriverManager.getConnection(ORACLE_URL, user, pass);
@@ -35,6 +36,7 @@ public class DBMyConnection implements DBIConnect {
 	
 	@Override
 	public void dbClose() {
+		
 		try {
 			if(con != null) con.close();
 			if(rs != null) rs.close();
@@ -47,10 +49,12 @@ public class DBMyConnection implements DBIConnect {
 			System.out.println("DB 자원 반납시 예외발생");
 			e.printStackTrace();
 		}
+		
 	}
 	
 	@Override
 	public String inputValue(String title) {
+		
 		System.out.print(title + "을(를) 입력(exit->종료):");
 		String inputStr = scan.nextLine();
 		if("EXIT".equalsIgnoreCase(inputStr)) {

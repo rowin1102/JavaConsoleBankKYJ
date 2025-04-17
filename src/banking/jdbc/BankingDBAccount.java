@@ -28,6 +28,7 @@ public class BankingDBAccount implements DBICustomDefine {
 	            scan.nextLine();
 	            
 	            if (choice >= 1 && choice <= 7) {
+	            	
 	                switch (choice) {
 	                    case MAKE:
 	                        new MakeDBAccount().dbExecute();
@@ -51,13 +52,16 @@ public class BankingDBAccount implements DBICustomDefine {
 	                        System.out.println("프로그램 종료");
 	                        return;
 	                }
+	                
 	            } else {
 	                System.out.println("메뉴는 1~7 사이의 숫자만 입력하세요.");
 	            }
+	            
 	        } else {
 	            System.out.println("숫자만 입력 가능합니다.");
 	            scan.nextLine();
 	        }
+	        
 	    }
 		
 	}
