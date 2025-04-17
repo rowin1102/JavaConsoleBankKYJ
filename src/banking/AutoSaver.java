@@ -38,7 +38,6 @@ public class AutoSaver extends Thread {
 			for(Account ac : accountSet) {
 				writer.println(ac.toString());
 			}
-			writer.flush();
 		}
 		catch (IOException e) {
 			System.out.println("IO오류");

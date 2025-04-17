@@ -118,6 +118,7 @@ public class AccountManager {
 				System.out.println("음수는 입금할 수 없습니다.");
 				return;
 			}
+			
 			if(deMoney % 500 != 0) {
 				System.out.println("입금액은 500원단위로 가능합니다.");
 				return;
