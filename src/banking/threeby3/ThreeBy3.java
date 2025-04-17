@@ -101,7 +101,7 @@ public class ThreeBy3 {
 		char[] moveKey = {'a', 'd', 'w', 's'};
 		int count = 0;
 		
-		while (count < 3) {
+		while (count < 100) {
 			char randomKey = moveKey[rand.nextInt(4)];
 			int before = findBlank();
 			move(randomKey, false);
