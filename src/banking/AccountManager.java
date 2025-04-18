@@ -19,32 +19,40 @@ public class AccountManager {
 		loadAccountData();
 	}
 	
+	// 계좌 정보를 파일에 저장
 	public void saveAcountData() {
+		
 		try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(SAVE_PATH))){
 			out.writeObject(myAccount);
 			System.out.println("계좌 정보가 저장되었습니다.");
 		} catch (IOException e) {
 			System.out.println("계좌 저장 중 오류 발생: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
+	// 파일에서 계좌 정보를 읽어온다.
 	@SuppressWarnings("unchecked")
 	public void loadAccountData() {
+		
 		File file = new File(SAVE_PATH);
+		
 		if(!file.exists()) {
 			System.out.println("AccountInfo.obj파일이 없습니다.");
 			return;
 		}
 		
 		try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(file))){
-			myAccount = (HashSet<Account>) in.readObject();
+			myAccount = (HashSet<Account>) in.readObject(); // 계좌 정보를 파일에서 로드
 			System.out.println("계좌 정보를 불러왔습니다.");
 		} catch (Exception e) {
 			System.out.println("계좌 불러오기 중 오류 발생: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
 	public void makeAccount(int choice) {
+		
 		String mkAccount, mkName, mkRating;
 		int mkMoney, mkInterest;
 		
@@ -74,9 +82,11 @@ public class AccountManager {
 				myAccount.remove(acc);
 				myAccount.add(acc);
 				System.out.println("계좌정보를 덮어썼습니다.");
+				saveAcountData();
 			} else {
 				System.out.println("기존 계좌정보를 유지합니다.");
 			}
+			
 		} else {
 			myAccount.add(acc);
 			System.out.println("계좌계설이 완료되었습니다.");
@@ -86,6 +96,7 @@ public class AccountManager {
 	}
 	
 	public void depositMoney() {
+		
 		BankingSystemMain.scan.nextLine();
 		
 		String deAccount; 
@@ -96,11 +107,14 @@ public class AccountManager {
 		deAccount = BankingSystemMain.scan.nextLine();
 		
 		boolean found = false;
+		
 		for(Account ac : myAccount) {
+			
 			if(deAccount.equals(ac.getAccount())) {
 				found = true;
 				break;
 			}
+			
 		}
 		
 		if(!found) {
@@ -112,6 +126,7 @@ public class AccountManager {
 		String tempMoney = BankingSystemMain.scan.nextLine();
 		
 		try {
+			
 			deMoney = Integer.parseInt(tempMoney);
 			
 			if(deMoney < 0) {
@@ -130,16 +145,20 @@ public class AccountManager {
 		}
 		
 		for(Account ac : myAccount) {
+			
 			if(deAccount.equals(ac.getAccount())) {	
 				ac.deposit(deMoney);
 				System.out.println("입금이 완료되었습니다.");
+				saveAcountData();
 				break;
 			}
+			
 		}
 		
 	}
 	
 	public void withdrawMoney() {
+		
 		BankingSystemMain.scan.nextLine();
 		
 		String wiAccount;
@@ -150,11 +169,14 @@ public class AccountManager {
 		wiAccount = BankingSystemMain.scan.nextLine();
 		
 		boolean found = false;
+		
 		for(Account ac : myAccount) {
+			
 			if(wiAccount.equals(ac.getAccount())) {
 				found = true;
 				break;
 			}
+			
 		}
 		
 		if(!found) {
@@ -166,16 +188,19 @@ public class AccountManager {
 		String tempMoney = BankingSystemMain.scan.nextLine();
 		
 		try {
+			
 			wiMoney = Integer.parseInt(tempMoney);
 			
 			if(wiMoney < 0) {
 				System.out.println("음수는 입금할 수 없습니다.");
 				return;
 			}
+			
 			if(wiMoney % 1000 != 0) {
 				System.out.println("출금액은 1000원단위로 가능합니다.");
 				return;
 			}
+			
 		}
 		catch (NumberFormatException e) {
 			System.out.println("정수만 입력할 수 있습니다.");
@@ -183,16 +208,21 @@ public class AccountManager {
 		}
 		
 		for(Account ac : myAccount) {
+			
 			if(wiAccount.equals(ac.getAccount())) {
+				
 				if(wiMoney > ac.getMoney()) {
+					
 					System.out.println("잔고가 부족합니다. 금액전체를 출금할까요?");
 					System.out.println("Y:금액전체 출금, N:출금요청취소");
 					System.out.print("선택:");
+					
 					String choice = BankingSystemMain.scan.nextLine();
 					
 					if(choice.toUpperCase().equals("Y")) {
 						System.out.println("금액 전체를 출금합니다.");
 						ac.setMoney(0);
+						saveAcountData();
 					} else if(choice.toUpperCase().equals("N")) {
 						System.out.println("출금요청을 취소합니다.");
 						return;
@@ -201,11 +231,15 @@ public class AccountManager {
 				} else {
 					ac.setMoney(ac.getMoney() - wiMoney);
 					System.out.println("출금이 완료되었습니다.");
+					saveAcountData();
 					break;
 				}
 				
 			}
+			
 		}
+		
+		saveAcountData();
 		
 	}
 	
@@ -227,6 +261,7 @@ public class AccountManager {
 	}
 	
 	public void deleteAccount() {
+		
 		BankingSystemMain.scan.nextLine();
 		
 		System.out.print("삭제할 계좌번호: ");
@@ -236,6 +271,7 @@ public class AccountManager {
 		
 		if(myAccount.remove(dummy)) {
 			System.out.println("계좌가 삭제되었습니다.");
+			saveAcountData();
 		} else {
 			System.out.println("해당계좌를 찾을 수 없습니다.");
 		}
@@ -250,20 +286,21 @@ public class AccountManager {
 		while(true) {
 			
 			BankingSystemMain.scan.nextLine();
+			
 			int choice = Integer.parseInt(BankingSystemMain.scan.nextLine());
 			
 			switch(choice) {
 			case 1:
 				if(autoSaver != null && autoSaver.isAlive()) {
 					System.out.println("이미 자동저장이 실행중입니다.");
+					return;
 				} else {
 					autoSaver = new AutoSaver(myAccount);
-					autoSaver.setDaemon(true);
+					autoSaver.setDaemon(true); // 메인 종료 시 자동 종료
 					autoSaver.start();
 					System.out.println("자동저장이 시작되었습니다.");
 					return;
 				}
-				break;
 			case 2:
 				if(autoSaver != null && autoSaver.isAlive()) {
 					autoSaver.interrupt();
@@ -274,8 +311,10 @@ public class AccountManager {
 					return;
 				}
 			default:
-					System.out.println("잘못된 선택입니다.");
+				System.out.println("잘못된 선택입니다.");
+				return;
 			}
+			
 		}
 		
 	}

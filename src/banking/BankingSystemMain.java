@@ -29,33 +29,43 @@ public class BankingSystemMain implements ICustomDefine {
 				int choice = 0;
 				
 				while(true) {
+					
 					showMenu();
+					
 					if(scan.hasNextInt()) {
+						
 						choice = scan.nextInt();
-						if(choice >= 1 && choice <= 8) {
+						scan.nextLine();
+						if(choice >= 1 && choice <= 7) {
 							break;
 						} else {
 							throw new MenuSelectException("1~7사이의 정수를 입력하세요.");
 						}	
+						
 					} else {
 						System.out.println("숫자만 입력 가능합니다.");
 						scan.nextLine();
 					}
+					
 				}
 				
 				switch(choice) {
 				case MAKE:
 					int subchoice = 0;
 					while(true) {
+						
 						System.out.println("1.보통계좌\n2.신용계좌\n3.특판계좌");
 						System.out.print("선택:");
 						subchoice = scan.nextInt();
 						scan.nextLine();
+						
 						if(subchoice == 1 || subchoice == 2 || subchoice == 3) {
 							bankingsystem.makeAccount(subchoice);
 							break;
 						}
+						
 						System.out.println("잘못된 입력입니다.");
+						
 					}
 					break;
 				case DEPOSIT:
@@ -76,6 +86,9 @@ public class BankingSystemMain implements ICustomDefine {
 				case EXIT:
 					System.out.println("프로그램 종료");
 					return;
+				default:
+					System.out.println("잘못된 선택입니다. 다시 입력해주세요.");
+				    break;
 				}
 			}
 			catch (InputMismatchException e) {

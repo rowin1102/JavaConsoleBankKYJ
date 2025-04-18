@@ -6,20 +6,12 @@ import java.util.Scanner;
 public class ThreeBy3 {
 	
 	public static Scanner scan = new Scanner(System.in);
-	static int[] board = new int[9];
-	static int[] setBoard = new int[9];
+	static int[] setBoard = {1, 2, 3, 4, 5, 6, 7, 8, -1};
+	static int[] board = setBoard.clone();
 	static Random rand = new Random();
 	
 	public static void set() {
-		
-		for(int i=0; i<8; i++) {
-			board[i] = i + 1;
-		}
-		board[8] = -1;
-		
-		for(int i=0; i<9; i++) {
-			setBoard[i] = board[i];
-		}
+		board = setBoard.clone();
 	}
 	
 	public static void swap(int a, int b) {
@@ -101,7 +93,7 @@ public class ThreeBy3 {
 		char[] moveKey = {'a', 'd', 'w', 's'};
 		int count = 0;
 		
-		while (count < 100) {
+		while (count < 4) {
 			char randomKey = moveKey[rand.nextInt(4)];
 			int before = findBlank();
 			move(randomKey, false);
@@ -150,7 +142,7 @@ public class ThreeBy3 {
 				scan.nextLine();
 				String subchoice = scan.nextLine();
 				
-				if(subchoice.toUpperCase().equals("Y")) {
+				if(subchoice.equalsIgnoreCase("y")) {
 					set();
 					moveRandom();
 					continue;
@@ -165,11 +157,12 @@ public class ThreeBy3 {
 			
 			choice = scan.next().charAt(0);
 			
-			move(choice);
-			
 			if(choice == 'x') {
+				System.out.println("게임을 종료합니다.");
 				break;
 			}
+			
+			move(choice);
 			
 		}
 		

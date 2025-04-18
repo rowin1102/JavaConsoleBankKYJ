@@ -2,7 +2,11 @@ package banking;
 
 import java.io.Serializable;
 
-public class HighCreditAccount extends Account implements Serializable{
+/*
+ 	기본 이자율과 신용등급에 따른 추가 이자율을 반영하여 입금 시 잔고를 증가.
+*/
+
+public class HighCreditAccount extends Account implements Serializable, ICustomDefine {
 	
 	private int interest;
 	private String creditRating;
@@ -23,11 +27,12 @@ public class HighCreditAccount extends Account implements Serializable{
 	
 	@Override
 	public void deposit(int amount) {
+		
 		int extra = 0;
 		switch(creditRating.toUpperCase()) {
-		case "A": extra = 7; break;
-		case "B": extra = 4; break;
-		case "C": extra = 2; break;
+		case GRADE_A: extra = RATE_A; break;
+		case GRADE_B: extra = RATE_B; break;
+		case GRADE_C: extra = RATE_C; break;
 		}
 		
 		int interestAmount = getMoney() * getInterest() / 100;
@@ -35,6 +40,7 @@ public class HighCreditAccount extends Account implements Serializable{
 		setMoney(getMoney() + interestAmount + extraInterest + amount);
 	}
 	
+	// 기본 계좌 정보를 출력, 기본 이자율과 신용등급을 추가로 출력
 	@Override
 	public void showAccInfo() {
 		super.showAccInfo();
