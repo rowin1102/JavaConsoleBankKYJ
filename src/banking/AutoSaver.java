@@ -30,7 +30,7 @@ public class AutoSaver extends Thread {
 			
 			try {
 				saveTextFile(); // 계좌 정보를 파일에 저장
-//				System.out.println("계좌 정보가 텍스트로 저장됩니다.");
+				System.out.println("계좌 정보가 텍스트로 저장됩니다.");
 				Thread.sleep(5000);
 			}
 			catch (InterruptedException e) {

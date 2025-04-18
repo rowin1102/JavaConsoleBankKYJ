@@ -97,7 +97,7 @@ public class AccountManager {
 	
 	public void depositMoney() {
 		
-		BankingSystemMain.scan.nextLine();
+//		BankingSystemMain.scan.nextLine();
 		
 		String deAccount; 
 		int deMoney = 0;
@@ -159,7 +159,7 @@ public class AccountManager {
 	
 	public void withdrawMoney() {
 		
-		BankingSystemMain.scan.nextLine();
+//		BankingSystemMain.scan.nextLine();
 		
 		String wiAccount;
 		int wiMoney;
@@ -262,7 +262,7 @@ public class AccountManager {
 	
 	public void deleteAccount() {
 		
-		BankingSystemMain.scan.nextLine();
+//		BankingSystemMain.scan.nextLine();
 		
 		System.out.print("삭제할 계좌번호: ");
 		String delete = BankingSystemMain.scan.nextLine();
@@ -285,7 +285,7 @@ public class AccountManager {
 		
 		while(true) {
 			
-			BankingSystemMain.scan.nextLine();
+//			BankingSystemMain.scan.nextLine();
 			
 			int choice = Integer.parseInt(BankingSystemMain.scan.nextLine());
 			

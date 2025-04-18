@@ -52,28 +52,32 @@ public class ThreeBy3 {
 		switch(key) {
 		case 'a':
 			if(pos % 3 == 2) {
-				if (showMessage) System.out.println("왼쪽으로 이동할 수 없습니다.");
+				if (showMessage) 
+					System.out.println("xxxxxxxxxxxxxx\nxxxx이동불가xxxx\nxxxxxxxxxxxxxx");
 				return;
 			}
 			offset = 1;
 			break;
 		case 'd':
 			if(pos % 3 == 0) {
-				if (showMessage) System.out.println("오른쪽으로 이동할 수 없습니다.");
+				if (showMessage) 
+					System.out.println("xxxxxxxxxxxxxx\nxxxx이동불가xxxx\nxxxxxxxxxxxxxx");
 				return;
 			}
 			offset = -1;
 			break;
 		case 'w':
 			if(pos >= 6) {
-				if (showMessage) System.out.println("위로 이동할 수 없습니다.");
+				if (showMessage) 
+					System.out.println("xxxxxxxxxxxxxx\nxxxx이동불가xxxx\nxxxxxxxxxxxxxx");
 				return;
 			}
 			offset = 3;
 			break;
 		case 's':
 			if(pos <= 2) {
-				if (showMessage) System.out.println("아래로 이동할 수 없습니다.");
+				if (showMessage) 
+					System.out.println("xxxxxxxxxxxxxx\nxxxx이동불가xxxx\nxxxxxxxxxxxxx");
 				return;
 			}
 			offset = -3;
@@ -139,7 +143,7 @@ public class ThreeBy3 {
 				printBoard();
 				System.out.println("재시작하시겠습니까?(y를 누르면 재시작, 나머지는 종료)");
 				
-				scan.nextLine();
+//				scan.nextLine();
 				String subchoice = scan.nextLine();
 				
 				if(subchoice.equalsIgnoreCase("y")) {
