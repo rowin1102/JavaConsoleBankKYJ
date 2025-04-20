@@ -53,7 +53,7 @@ public class ThreeBy3 {
 		case 'a':
 			if(pos % 3 == 2) {
 				if (showMessage) 
-					System.out.println("xxxxxxxxxxxxxx\nxxxx이동불가xxxx\nxxxxxxxxxxxxxx");
+					System.out.println("xxxxxxxxxxxxxx\nxxx이동불가xxx\nxxxxxxxxxxxxxx");
 				return;
 			}
 			offset = 1;
@@ -61,7 +61,7 @@ public class ThreeBy3 {
 		case 'd':
 			if(pos % 3 == 0) {
 				if (showMessage) 
-					System.out.println("xxxxxxxxxxxxxx\nxxxx이동불가xxxx\nxxxxxxxxxxxxxx");
+					System.out.println("xxxxxxxxxxxxxx\nxxx이동불가xxx\nxxxxxxxxxxxxxx");
 				return;
 			}
 			offset = -1;
@@ -69,7 +69,7 @@ public class ThreeBy3 {
 		case 'w':
 			if(pos >= 6) {
 				if (showMessage) 
-					System.out.println("xxxxxxxxxxxxxx\nxxxx이동불가xxxx\nxxxxxxxxxxxxxx");
+					System.out.println("xxxxxxxxxxxxxx\nxxx이동불가xxx\nxxxxxxxxxxxxxx");
 				return;
 			}
 			offset = 3;
@@ -77,7 +77,7 @@ public class ThreeBy3 {
 		case 's':
 			if(pos <= 2) {
 				if (showMessage) 
-					System.out.println("xxxxxxxxxxxxxx\nxxxx이동불가xxxx\nxxxxxxxxxxxxx");
+					System.out.println("xxxxxxxxxxxxxx\nxxx이동불가xxx\nxxxxxxxxxxxxx");
 				return;
 			}
 			offset = -3;
@@ -97,7 +97,7 @@ public class ThreeBy3 {
 		char[] moveKey = {'a', 'd', 'w', 's'};
 		int count = 0;
 		
-		while (count < 4) {
+		while (count < 1) {
 			char randomKey = moveKey[rand.nextInt(4)];
 			int before = findBlank();
 			move(randomKey, false);
@@ -143,7 +143,7 @@ public class ThreeBy3 {
 				printBoard();
 				System.out.println("재시작하시겠습니까?(y를 누르면 재시작, 나머지는 종료)");
 				
-//				scan.nextLine();
+				scan.nextLine();
 				String subchoice = scan.nextLine();
 				
 				if(subchoice.equalsIgnoreCase("y")) {
